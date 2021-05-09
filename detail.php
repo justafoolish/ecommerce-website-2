@@ -33,6 +33,8 @@ if (isset($_GET['productID'])) {
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="js/cart_process.js"></script>
+
   <style>
       .nl {
           color: white !important;
@@ -40,6 +42,15 @@ if (isset($_GET['productID'])) {
       .nl:hover {
         color: #ffc108 !important;
       }
+      .cart-amount {
+        top: -13px;
+        right: -10px;
+        min-width: 20px;
+        min-height: 20px;
+        border-width: 2px;
+        border-radius: 50%;
+        font-size: 12px;
+    }
   </style>
 </head>
 <body>
@@ -70,7 +81,24 @@ if (isset($_GET['productID'])) {
           <form class="form-inline">
             <input class="form-control-sm mr-sm-2 border-0" type="search" placeholder="Search" aria-label="Search">
             <button class="btn my-sm-0 "><a href="" class="text-light"><i class="fas fa-search"></i></a></i></button>
-            <a class="btn my-sm-0 border-0 bg-transparent text-light"><i class="fas fa-shopping-cart"></i></a>
+            <a class="btn my-sm-0 border-0 bg-transparent text-light">
+                <i class="fas fa-shopping-cart position-relative">
+                <?php
+                    
+                    $total_price = 0;
+                    $total_qty = 0;
+                    if(isset($_SESSION['cart'])) {
+                        foreach($_SESSION['cart'] as $value) {
+                            $total_qty += $value["quantity"];
+                            $total_price += (int)$value["price"]*$value["quantity"];
+                        } 
+                    }
+                ?>
+                <div class="cart-amount bg-info position-absolute text-white d-flex justify-content-center align-items-center font-weight-bold">
+                    <span id="cart_amount"><?php echo $total_qty ?></span>
+                </div>
+                </i>
+            </a>
             <?php
             if(!isset($_SESSION['user_email'])) {
 
@@ -85,6 +113,13 @@ if (isset($_GET['productID'])) {
           </form>
         </div>        
     </nav>
+    <div aria-live="polite" aria-atomic="true" style="bottom: 0; right: 0; z-index: 1200;" class="position-fixed">
+            <div class="toast bg-success font-weight-bold p-2 text-light">
+                <div class="toast-body">
+                    Thêm Sản Phẩm Thành Công
+                </div>
+            </div>
+    </div>
     
     <div class="container mt-3 pb-5">
        
@@ -126,12 +161,12 @@ if (isset($_GET['productID'])) {
                </div>              
                <div class="row mt-2">
                    <div class="col-md-12 text-danger">
-                       <h4 id="product-price"><?php echo $getProduct['GIA'] ?><sup>đ</sup></h4>                        
+                       <h4 id="product-price"><?php echo number_format($getProduct['GIA'],0,",",".") ?><sup>đ</sup></h4>                        
                    </div>
                </div>    
                <div class="row mt-5">
                    <div class="col-md-12">
-                       <button class="btn btn-warning text-light mt-auto">                            
+                       <button id="myBtn" class="btn btn-warning text-light mt-auto" onclick="addCart('<?php echo $getP['MA_SP'] ?>')">                            
                            <i class="fa fa-cart-plus" aria-hidden="true"></i> 
                            Thêm Vào Giỏ                   
                        </button>
@@ -171,10 +206,10 @@ if (isset($_GET['productID'])) {
        </div>
    </div>
     
-    <footer class="bg-dark">
+   <footer class="bg-dark">
         <div class="container-fuild text-light">
-            <div class="card-deck pt-3">
-                    
+            <div class="row card-deck pt-3 ml-5">
+                <div class="col-md-5 pr-0">
                     <div class="card border-0 bg-dark ml-5">
                         <div class="card-header bg-dark border-0"><h4>HỆ THỐNG CỬA HÀNG</h4></div>
                         <div class="card-body border-0">
@@ -183,22 +218,26 @@ if (isset($_GET['productID'])) {
                             <p>Chi nhánh 3:     4, Tôn Đức Thắng, Quận 1, Tp.HCM</p>
                         </div>
                     </div>
-                    
+                </div>
+                <div class="col-md pl-0">
                     <div class="card border-0 bg-dark">
                         <div class="card-header bg-dark border-0"><h4>CHÍNH SÁCH & DỊCH VỤ</h4></div>
                         <div class="card-body border-0">
-                            <a style="color: white;" href="#"><i class="fas fa-truck mr-2" aria-hidden="true"></i>Vận chuyển</a> <br>
-                            <a style="color: white;" href="#"><i class="fas fa-money-check-alt"></i> Thanh toán</a> <br>
-                            <a style="color: white;" href="#"><i class="fas fa-exchange-alt"></i> Đổi trả</a>
+                            <a href="#" class="text-light text-decoration-none pb-3"><i class="fas fa-shipping-fast mr-2"></i>Vận chuyển</a><br>
+                            <a href="#" class="text-light text-decoration-none pb-3"><i class="fas fa-money-check-alt mr-2"></i>Thanh toán</a><br>
+                            <a href="#" class="text-light text-decoration-none pb-3"><i class="fas fa-exchange-alt mr-2"></i>Đổi trả</a>
                         </div>
                     </div>
-                    
-                    <div class="card border-0 bg-dark mr-1">
+                </div> 
+                <div class="col-md">
+                    <div class="card border-0 bg-dark mx-0">
                         <div class="card-header bg-dark border-0"><h4>LIÊN HỆ</h4></div>
                         <div class="card-body border-0">
-                            <p>Điện thoại: 0123456789 <br> Email: hotro@hotro.com</p>
+                            <p><i class="fas fa-phone-alt mr-2"></i> 0123456789 <br>
+                            <i class="fas fa-envelope-open-text mr-2"></i> hotro@hotro.com</p>
                         </div>
                     </div>
+                </div>             
             </div>
         </div>
         <hr style="background-color: white; height: 1px; margin: 0; padding: 0;">
@@ -220,6 +259,7 @@ if (isset($_GET['productID'])) {
 
 
     <?php include("login_registry_modal.php"); ?>
+
   
 
 </body>

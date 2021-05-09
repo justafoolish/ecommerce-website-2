@@ -20,6 +20,7 @@
 
         } 
         else {
+            echo "<script>window.open('index.php','_self')</script>";
 
             echo "<script>alert('Địa Chỉ Email Hoặc Mật Khẩu Không Đúng')</script>";
 
