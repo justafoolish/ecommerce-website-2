@@ -4,18 +4,6 @@ session_start();
 
 include("admin/includes/database.php");
 
-if (isset($_GET['productID'])) {
-    $MyConn = new MyConnect();
-
-    $pID = $_GET['productID'];
-
-    $query = "SELECT * FROM SP WHERE MA_SP='$pID'";
-
-    $result = $MyConn->query($query);
-
-    $getProduct = mysqli_fetch_array($result);
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,10 +24,10 @@ if (isset($_GET['productID'])) {
   <script type="text/javascript" src="js/cart_process.js"></script>
 
   <style>
-      .nl {
+      .nav-link {
           color: white !important;
       }
-      .nl:hover {
+      .nav-link:hover {
         color: #ffc108 !important;
       }
       .cart-amount {
@@ -51,6 +39,14 @@ if (isset($_GET['productID'])) {
         border-radius: 50%;
         font-size: 12px;
     }
+    enav:disabled {
+        color: black;
+    }
+    .nav-tabs {
+        border-bottom: 1px solid #dee2e6;
+    }
+    button:focus {outline:0;}
+
   </style>
 </head>
 <body>
@@ -64,16 +60,16 @@ if (isset($_GET['productID'])) {
         <div class="collapse navbar-collapse" id="navbarColor01">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link nl" href="index.php">Trang Chủ <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="index.php">Trang Chủ <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link nl" href="product.php">Sản Phẩm</a>
+              <a class="nav-link" href="product.php">Sản Phẩm</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link nl" href="#">Giới Thiệu</a>
+              <a class="nav-link" href="#">Giới Thiệu</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link nl" href="#">Liên Hệ</a>
+              <a class="nav-link" href="#">Liên Hệ</a>
             </li>
             
           </ul>
@@ -81,7 +77,7 @@ if (isset($_GET['productID'])) {
           <form class="form-inline">
             <input class="form-control-sm mr-sm-2 border-0" type="search" placeholder="Search" aria-label="Search">
             <button class="btn my-sm-0 "><a href="" class="text-light"><i class="fas fa-search"></i></a></i></button>
-            <a href="cart.php" class="btn my-sm-0 border-0 bg-transparent text-light">
+            <a class="btn my-sm-0 border-0 bg-transparent text-light">
                 <i class="fas fa-shopping-cart position-relative">
                 <?php
                     
@@ -95,9 +91,8 @@ if (isset($_GET['productID'])) {
                     }
                 ?>
                 <div class="cart-amount bg-info position-absolute text-white d-flex justify-content-center align-items-center font-weight-bold">
-                    <span id="cart_amount"><?php echo $total_qty ?></span>
-                </div>
-                </i>
+                <span id="cart_amount"><?php echo $total_qty ?></span>
+                </div></i>
             </a>
             <?php
             if(!isset($_SESSION['user_email'])) {
@@ -113,100 +108,96 @@ if (isset($_GET['productID'])) {
           </form>
         </div>        
     </nav>
-    <div aria-live="polite" aria-atomic="true" style="bottom: 0; right: 0; z-index: 1200;" class="position-fixed">
-            <div class="toast bg-success font-weight-bold p-2 text-light">
-                <div class="toast-body">
-                    Thêm Sản Phẩm Thành Công
+    
+    <div class="container pb-5 position-relative pt-2">
+            <div class="mt-5 d-block ">
+                <ul class="nav nav-pills nav-fill border-0 rounded-0">
+                    <li class="flex-grow-1 text-center nav-item">
+                        <a href="" class="m-0 px-0 py-3 bg-warning text-light nav-link disabled active font-weight-bold rounded-0 nav-link">Giỏ Hàng</a>
+                    </li>
+                    <li class="flex-grow-1 text-center nav-item">
+                        <a class="m-0 px-0 py-3 bg-secondary text-muted nav-link disabled  font-weight-bold rounded-0 nav-link">Vận Chuyển</a>
+                    </li>
+                    <li class="flex-grow-1 text-center nav-item">
+                        <a class="m-0 px-0 py-3 bg-secondary text-muted nav-link disabled  font-weight-bold rounded-0 nav-link">Thanh Toán</a>
+                    </li>
+                    <li class="flex-grow-1 text-center nav-item">
+                        <a class="m-0 px-0 py-3 bg-secondary text-muted nav-link disabled  font-weight-bold rounded-0 nav-link">Xác Nhận Đơn Hàng</a>
+                    </li>
+                </ul>
+            </div>
+
+
+            <div class="my-5">
+                <div class="row mx-0">
+                    <div class="col-12 mb-4 px-0">
+                    <?php 
+                        
+                        if(isset($_SESSION['cart'])) {
+                            $sum = 0;
+                            $cart = $_SESSION['cart'];
+                    ?>
+                        <table class="w-100 table table-bordered text-center">
+                            <thead>
+                                <th></th>
+                                <th>Sản Phẩm</th>
+                                <th>Giá</th>
+                                <th>Số Lượng</th>
+                                <th>Thành Tiền</th>
+                                <th></th>
+                            </thead>
+                            <tbody>
+                            <?php 
+                                foreach($cart as $product) {
+                            ?>
+                                <tr class="font-weight-bold">
+                                    <td><img src="<?php echo "admin/product_images/".$product["image"] ?>" style="width: 50px; height: auto;"></td>
+                                    <td class="align-middle"><?php echo $product["name"]; ?></td>
+                                    <td class="align-middle"><?php echo $product["price"]; ?></td>
+                                    <td class="align-middle">
+                                        <div class="d-flex justify-content-center">
+                                        <button class="btn btn-sm border rounded-0 btn-outline-light text-dark">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <input type="text" class="text-center border border-left-0 border-right-0" value="<?php echo $product["quantity"]; ?>" readonly size="5">
+                                        <button class="btn btn-sm border rounded-0 btn-outline-light text-dark">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+
+                                        </div>
+                                    </td>
+                                    <td class="align-middle"><?php $sum += $product["price"]*$product["quantity"]; echo number_format($product["price"]*$product["quantity"],0,",",".")."<sup>đ</sup>";  ?></td>
+                                    <td class="align-middle"><i class="fas fa-trash-alt"></i></td>
+                                </tr>
+
+                            <?php } ?>
+                            </tbody>
+                        </table>
+
+                        <div class="mt-5 ml-auto col-lg-5 px-0 bg-light rounded">
+                            <div class="d-flex justify-content-between align-items-center w-100 p-3">
+                                <h4 class="mb-0 text-dark">Tổng Tiền: </h4>
+                                <h4 class="mb-0 text-dark"><?php echo number_format($sum,0,",",".")."<sup>đ</sup>"; ?></h4>
+                            </div>
+                            <div class="px-3 mb-5">
+                                <a href="" class="btn btn-primary btn-block btn-lg py-3">Xác Nhận Giỏ Hàng</a>
+                            </div>
+                        </div>
+                    <?php 
+                        } else {
+
+                    ?>
+                    <div class="text-center py-5 font-weight-bolder">
+                            <p>Giỏ Hàng Của Bạn Đang Trống</p>
+                            <a href="product.php" class="btn btn-info mt-2">Trở Lại Trang Mua Hàng</a>
+                    </div>
+                    <?php } ?>
+                    </div>
                 </div>
             </div>
     </div>
     
-    <div class="container mt-3 pb-5">
-       
-       <div class="row">
-           <div class="col-md-6">
-               <img src="<?php echo "admin/product_images/".$getProduct['HINHANH_SP']; ?>" class="img-fluid rounded" width="540px" height="540px">
-           </div>
-           <div class="col-md-6"> 
-               <div class="row">
-                   <div class="col-md-12 mt-4">
-                       <h1><?php echo $getProduct['TEN_SP'] ?></h1>
-                   </div>
-               </div>     
-               <div class="row">
-                   <div class="col-md-12">
-                       <span class="badge badge-success my-3">Còn Hàng</span>
-                       <span class="product-number"><?php echo $getProduct['MA_SP'] ?></span>
-                   </div>
-               </div>     
-               <div class="row my-5">
-                   <div class="col-md-12">
-                       <div id="description">
-                            <?php echo $getProduct['MIEUTA_SP'] ?>
-                        </div>
-                   </div>
-               </div>    
-               <div class="row mt-5 mt-5">
-                   <div class="col-md-4">                        
-                           <i class="fa fa-star" ></i> <em></em>
-                           <i class="fa fa-star" ></i> <em></em>
-                           <i class="fa fa-star" ></i> <em></em>
-                           <i class="fa fa-star" ></i> <em></em>                                                    
-                           <i class="fa fa-star-half-o" ></i> <em></em>   
-                           <span class="badge badge-info">53</span>                        
-                   </div>
-                   <div class="col-md-4">
-                       <a href="" class="text-decoration-none text-info"><i class="fas fa-pen"></i> Đánh giá sản phẩm</a>
-                   </div>
-               </div>              
-               <div class="row mt-2">
-                   <div class="col-md-12 text-danger">
-                       <h4 id="product-price"><?php echo number_format($getProduct['GIA'],0,",",".") ?><sup>đ</sup></h4>                        
-                   </div>
-               </div>    
-               <div class="row mt-5">
-                   <div class="col-md-12">
-                       <button id="myBtn" class="btn btn-warning text-light mt-auto" onclick="addCart('<?php echo $getP['MA_SP'] ?>')">                            
-                           <i class="fa fa-cart-plus" aria-hidden="true"></i> 
-                           Thêm Vào Giỏ                   
-                       </button>
-                   </div>
-               </div>    
-               
-           </div>
-       
-       
-       
-       </div>
-       <div class="row mt-3">
-           <div class="col-md-12">
-               <div class="bd-example bd-example-tabs">
-                   <nav>
-                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                       <a class="nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-description" role="tab" aria-controls="nav-home" aria-selected="true">Miêu tả</a>
-                       <a class="nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-payment" role="tab" aria-controls="nav-profile" aria-selected="false">Phương thức thanh toán</a>
-                       <a class="nav-link" id="nav-comment-tab" data-toggle="tab" href="#nav-comment" role="tab" aria-controls="nav-contact" aria-selected="false">Đánh giá</a>
-                     </div>
-                   </nav>
-                   <div class="tab-content" id="nav-tabContent">
-                     <div class="tab-pane fade show active" id="nav-description" role="tabpanel" aria-labelledby="nav-home-tab">
-                        <p class="mt-3"><?php echo $getProduct['MIEUTA_SP']; ?></p>
-                    </div>
-                     <div class="tab-pane fade" id="nav-payment" role="tabpanel" aria-labelledby="nav-profile-tab">
-                        <p class="mt-3">Chưa Có Dữ Liệu Thanh Toán</p>
-                    </div>
-                     <div class="tab-pane fade" id="nav-comment" role="tabpanel" aria-labelledby="nav-contact-tab">
-                        <p class="mt-3">Chưa Có Đánh Giá</p>
-                    </div>
-                   </div>
-                 </div>
-
-           </div>
-
-       </div>
-   </div>
-    
-   <footer class="bg-dark">
+    <footer class="bg-dark">
         <div class="container-fuild text-light">
             <div class="row card-deck pt-3 ml-5">
                 <div class="col-md-5 pr-0">
@@ -259,10 +250,6 @@ if (isset($_GET['productID'])) {
 
 
     <?php include("login_registry_modal.php"); ?>
-
-  
-
+    
 </body>
 </html>
-
-<?php } ?>

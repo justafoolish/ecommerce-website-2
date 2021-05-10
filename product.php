@@ -91,7 +91,7 @@ $resultMan = $MyConn->query($queryMan);
           <form class="form-inline">
             <input class="form-control-sm mr-sm-2 border-0" type="search" placeholder="Search" aria-label="Search">
             <button class="btn my-sm-0 "><a href="" class="text-light"><i class="fas fa-search"></i></a></i></button>
-            <a class="btn my-sm-0 border-0 bg-transparent text-light">
+            <a href="cart.php" class="btn my-sm-0 border-0 bg-transparent text-light">
                 <i class="fas fa-shopping-cart position-relative">
                 <?php
                     
