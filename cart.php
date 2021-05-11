@@ -178,11 +178,11 @@ else {
                                     <input type="hidden" class="iprice" value="<?php echo $product["price"] ?>">
                                     <td class="align-middle">
                                         <div class="d-flex justify-content-center text-center">
-                                        <button class="btn btn-sm border rounded-0 btn-outline-light text-dark">
+                                        <button class="btn btn-sm border rounded-0 btn-outline-light text-dark btn-dec">
                                             <i class="fas fa-minus"></i>
                                         </button>
-                                        <input type="number" onchange="subTotal()" class="text-center justify-content-center border border-left-0 border-right-0 iquantity" style="width: 2em" value="<?php echo $product["quantity"]; ?>">
-                                        <button class="btn btn-sm border rounded-0 btn-outline-light text-dark">
+                                        <input type="text" onchange="subTotal()" class="text-center justify-content-center border border-left-0 border-right-0 iquantity" style="width: 2em" value="<?php echo $product["quantity"]; ?>" readonly>
+                                        <button class="btn btn-sm border rounded-0 btn-outline-light text-dark btn-inc">
                                             <i class="fas fa-plus"></i>
                                         </button>
 
