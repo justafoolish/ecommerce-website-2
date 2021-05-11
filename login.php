@@ -21,6 +21,8 @@
         if($result != 0) {
             $_SESSION['user_id'] = $userID;
 
+
+
             $_SESSION['user_email'] = $email;
 
             echo "<script>window.history.back();</script>";

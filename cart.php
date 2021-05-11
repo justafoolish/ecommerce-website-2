@@ -8,9 +8,13 @@ $checkLogin = "";
 $href = "#";
 if(!isset($_SESSION['user_id'])) {
     $checkLogin = "data-toggle='modal' data-target='#loginModal'";
+
+   
 }
 else {
     $href = "shipping.php";
+
+
 }
 
 

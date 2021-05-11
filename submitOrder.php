@@ -166,7 +166,7 @@ $getAddress = $row['DIACHI'];
                                     $cart = $_SESSION['cart'];
                                     $total = 0;
                                     foreach($cart as $product) {
-                                        $total = $total + $product["price"];
+                                        $total = $total + (int)$product["price"]*$product["quantity"];
                                     }
                                 ?>
                                 <div class="d-flex justify-content-between px-3 py-2">
