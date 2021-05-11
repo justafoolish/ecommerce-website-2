@@ -6,15 +6,29 @@ include("admin/includes/database.php");
 
 $checkLogin = "";
 $href = "#";
+$checkStatus = "";
 if(!isset($_SESSION['user_id'])) {
     $checkLogin = "data-toggle='modal' data-target='#loginModal'";
 
    
 }
 else {
-    $href = "shipping.php";
 
+    $uid = $_SESSION['user_id'];
+    $checkStatusQuery = "SELECT TRANGTHAI FROM KH WHERE MA_KH='$uid'";
 
+    $MyCon = new MyConnect();
+    $result = $MyCon->query($checkStatusQuery);
+    $row = mysqli_fetch_array($result);
+
+    if($row['TRANGTHAI'] == "LOCKED") {
+        $checkStatus = "onclick=lockNoti()";
+    }
+    else {
+        $href = "shipping.php";
+
+    }
+     
 }
 
 
@@ -181,7 +195,7 @@ else {
                                         <button class="btn btn-sm border rounded-0 btn-outline-light text-dark btn-dec">
                                             <i class="fas fa-minus"></i>
                                         </button>
-                                        <input type="text" onchange="subTotal()" class="text-center justify-content-center border border-left-0 border-right-0 iquantity" style="width: 2em" value="<?php echo $product["quantity"]; ?>" readonly>
+                                        <input type="text"  class="text-center justify-content-center border border-left-0 border-right-0 iquantity" style="width: 2em" value="<?php echo $product["quantity"]; ?>" readonly>
                                         <button class="btn btn-sm border rounded-0 btn-outline-light text-dark btn-inc">
                                             <i class="fas fa-plus"></i>
                                         </button>
@@ -203,7 +217,7 @@ else {
                                 <h4 class="mb-0 text-dark"><span id="total"><?php echo number_format($sum,0,",","."); ?></span><sup>đ</sup></h4>
                             </div>
                             <div class="px-3 mb-5">
-                                <a href="<?php echo $href; ?>" class="btn btn-info btn-block btn-lg py-3" <?php echo $checkLogin; ?>>Xác Nhận Giỏ Hàng</a>
+                                <a href="<?php echo $href; ?>" class="btn btn-info btn-block btn-lg py-3" <?php echo $checkLogin; ?> <?php echo $checkStatus; ?>>Xác Nhận Giỏ Hàng</a>
                             </div>
                         </div>
                     <?php 

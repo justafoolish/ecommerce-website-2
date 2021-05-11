@@ -71,3 +71,6 @@ function decr(i) {
   subTotal();
 }
 
+function lockNoti() {
+  alert("Tài khoản của bạn đang bị khóa. Vui lòng liên hệ quản trị viên.");
+}

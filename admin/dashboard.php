@@ -121,7 +121,7 @@ else {
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-light text-uppercase mb-1">
                                                 <h5>DOANH THU</h5></div>
-                                            <div class="h5 mb-0 font-weight-bold text-light"> <?php echo $get_Income."<sup>₫</sup>" ?> </div>
+                                            <div class="h5 mb-0 font-weight-bold text-light"> <?php echo number_format($get_Income,0,",",".")."<sup>₫</sup>" ?> </div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-shopping-cart fa-2x text-light"></i>
@@ -167,7 +167,7 @@ else {
                                         <tbody>
                                             <?php 
                                                 $i = 1;
-                                                $getTopBillQuery = "SELECT EMAIL, MA_HD, HOADON.TRANGTHAI, TONGTIEN FROM HOADON, KH WHERE (KH.MA_KH = HOADON.MA_KH) LIMIT 5";
+                                                $getTopBillQuery = "SELECT EMAIL, MA_HD, HOADON.TRANGTHAI, TONGTIEN FROM HOADON, KH WHERE (KH.MA_KH = HOADON.MA_KH) ORDER BY RAND() LIMIT 5";
                                                 $result = $MyConn->query($getTopBillQuery);
                                                 while($row = mysqli_fetch_array($result)) {
                                                     $email = $row['EMAIL'];
@@ -180,7 +180,7 @@ else {
                                                 <td class="text-center"> <?php echo $i++; ?> </td>
                                                 <td> <?php echo $email; ?> </td>
                                                 <td> <?php echo $billID; ?> </td>
-                                                <td> <?php echo $totalbill; ?></td>
+                                                <td> <?php echo number_format($totalbill,0,",","."); ?><sup>đ</sup></td>
                                                 <td> <?php echo $status; ?> </td>
                                             </tr>
                                             <?php } ?>

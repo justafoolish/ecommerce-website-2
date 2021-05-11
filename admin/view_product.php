@@ -62,7 +62,7 @@ else {
                                 <td><img src="<?php echo "product_images/$p_image" ?>" width="60" height="60" class="rounded shadow"></td>
                                 <td> <?php echo $p_cat ?></td>
                                 <td> <?php echo $p_man ?></td>
-                                <td> <?php echo $p_price ?> </td>
+                                <td> <?php echo number_format($p_price,0,",","."); ?><sup>đ</sup></td>
                                 <td>
                                     <!--  < ? p h p echo $pro_id; ?> -->
                                     <a href="index.php?delete_product=<?php echo $p_id ?>" class="text-danger" style="text-decoration: none">

@@ -39,7 +39,7 @@ else {
                             <tr>
                                 <td> <?php echo $tenkh ?> </td>
                                 <td> <?php echo $mahd ?> </td>
-                                <td> <?php echo $tongtien."<sup>₫</sup>" ?></td>
+                                <td> <?php echo number_format($tongtien,0,",",".")."<sup>₫</sup>" ?></td>
                                 <td> <?php echo $trangthaihd ?></td>
                                 <td>
                                     <!--  < ? p h p echo $pro_id; ?> -->

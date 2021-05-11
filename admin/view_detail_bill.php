@@ -67,7 +67,7 @@ else {
                                 <td> <?php echo $row['MA_SP'] ?> </td>
                                 <td> <img src="<?php echo "product_images/".$row['HINHANH_SP'] ?>" width="60" height="60" class="rounded"> </td>
                                 <td> <?php echo $row['SOLUONG'] ?> </td>
-                                <td> <?php echo $row['TONGTIEN']."<sup>đ</sup>" ?></td>
+                                <td> <?php echo number_format($row['TONGTIEN'],0,",",".")."<sup>đ</sup>" ?></td>
                             </tr>
                             <?php } ?>
                         </tbody>
