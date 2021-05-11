@@ -7,20 +7,27 @@
         $email = mysqli_real_escape_string($MyConn->getConn(),$_POST['email']);
         $pass = mysqli_real_escape_string($MyConn->getConn(),$_POST['passwd']);
 
-        $query = "SELECT * FROM KH WHERE EMAIL='$email' AND MATKHAU='$pass'";
+        $query = "SELECT MA_KH FROM KH WHERE EMAIL='$email' AND MATKHAU='$pass'";
 
         $execute = $MyConn->query($query);
 
-        $result = mysqli_num_rows($execute);
+        $row = mysqli_fetch_array($execute);
+
+        $result = count($row);
+
+        $userID = $row['MA_KH'];
+
 
         if($result != 0) {
+            $_SESSION['user_id'] = $userID;
+
             $_SESSION['user_email'] = $email;
 
-            echo "<script>window.open('index.php','_self')</script>";
+            echo "<script>window.history.back();</script>";
 
         } 
         else {
-            echo "<script>window.open('index.php','_self')</script>";
+            echo "<script>window.history.back();</script>";
 
             echo "<script>alert('Địa Chỉ Email Hoặc Mật Khẩu Không Đúng')</script>";
 

@@ -3,16 +3,19 @@
 session_start();
 
 include("admin/includes/database.php");
+$MyConn = new MyConnect();
 
-$checkLogin = "";
-$href = "#";
-if(!isset($_SESSION['user_id'])) {
-    $checkLogin = "data-toggle='modal' data-target='#loginModal'";
-}
-else {
-    $href = "shipping.php";
-}
+$userID = $_SESSION['user_id'];
 
+
+
+$getUser = "SELECT * FROM KH WHERE MA_KH='$userID'";
+
+
+
+$execute = $MyConn->query($getUser);
+
+$result = mysqli_fetch_array($execute);
 
 ?>
 <!DOCTYPE html>
@@ -104,7 +107,7 @@ else {
                 </div></i>
             </a>
             <?php
-            if(!isset($_SESSION['user_email'])) {
+            if(!isset($_SESSION['user_id'])) {
 
                echo  "<a class='btn my-sm-0 border-0' data-toggle='modal' data-target='#loginModal'><i class='fas fa-user text-light'></i></a>";
 
@@ -118,22 +121,15 @@ else {
         </div>        
     </nav>
 
-    <div aria-live="polite" aria-atomic="true" style="bottom: 0; right: 0; z-index: 1200;" class="position-fixed">
-            <div class="toast bg-success font-weight-bold p-2 text-light">
-                <div class="toast-body">
-                        Xóa Sản Phẩm Thành Công
-                </div>
-            </div>
-    </div>
     
     <div class="container pb-5 position-relative pt-2">
             <div class="mt-5 d-block ">
                 <ul class="nav nav-pills nav-fill border-0 rounded-0">
                     <li class="flex-grow-1 text-center nav-item">
-                        <a href="" class="m-0 px-0 py-3 bg-warning text-light nav-link disabled active font-weight-bold rounded-0 nav-link border-right">Giỏ Hàng</a>
+                        <a href="" class="m-0 px-0 py-3 bg-secondary text-muted nav-link disabled font-weight-bold rounded-0 nav-link border-right">Giỏ Hàng</a>
                     </li>
                     <li class="flex-grow-1 text-center nav-item">
-                        <a class="m-0 px-0 py-3 bg-secondary text-muted nav-link disabled  font-weight-bold rounded-0 nav-link border-right">Vận Chuyển</a>
+                        <a class="m-0 px-0 py-3 bg-warning text-light nav-link disabled active  font-weight-bold rounded-0 nav-link border-right">Vận Chuyển</a>
                     </li>
                     <li class="flex-grow-1 text-center nav-item">
                         <a class="m-0 px-0 py-3 bg-secondary text-muted nav-link disabled  font-weight-bold rounded-0 nav-link border-right">Thanh Toán</a>
@@ -145,74 +141,33 @@ else {
             </div>
 
 
-            <div class="my-5">
-                <div class="row mx-0">
-                    <div class="col-12 mb-4 px-0">
-                    <?php 
-                        
-                        if(isset($_SESSION['cart'])) {
-                            $sum = 0;
-                            $cart = $_SESSION['cart'];
-                    ?>
-                        <table class="w-100 table table-bordered text-center">
-                            <thead>
-                                <th></th>
-                                <th>Sản Phẩm</th>
-                                <th>Giá</th>
-                                <th>Số Lượng</th>
-                                <th>Thành Tiền</th>
-                                <th></th>
-                            </thead>
-                            <tbody>
-                            <?php 
-                                foreach($cart as $product) {
-                            ?>
-                                <tr class="font-weight-bold">
-                                    <td><img src="<?php echo "admin/product_images/".$product["image"] ?>" style="width: 50px; height: auto;"></td>
-                                    <td class="align-middle"><?php echo $product["name"]; ?></td>
-                                    <td class="align-middle"><?php echo number_format($product["price"],0,",",".")."<sup>đ</sup>"; ?></td>
-                                    <input type="hidden" class="iprice" value="<?php echo $product["price"] ?>">
-                                    <td class="align-middle">
-                                        <div class="d-flex justify-content-center text-center">
-                                        <button class="btn btn-sm border rounded-0 btn-outline-light text-dark">
-                                            <i class="fas fa-minus"></i>
-                                        </button>
-                                        <input type="number" onchange="subTotal()" class="text-center justify-content-center border border-left-0 border-right-0 iquantity" style="width: 2em" value="<?php echo $product["quantity"]; ?>">
-                                        <button class="btn btn-sm border rounded-0 btn-outline-light text-dark">
-                                            <i class="fas fa-plus"></i>
-                                        </button>
-
-                                        </div>
-                                    </td>
-                                    <td class="align-middle"><span class="itotal"><?php $sum += $product["price"]*$product["quantity"]; echo number_format($product["price"]*$product["quantity"],0,",",".");  ?></span><sup>đ</sup></td>
-                                    <td class="align-middle"><button class="btn btn-outline-danger" onclick="removeItem('<?php echo array_search($product,$cart); ?>')"><i class="fas fa-trash-alt"></i></button></td>
-                                    <input type="hidden" class="pID" value="<?php echo array_search($product,$cart); ?>">
-                                </tr>
-
-                            <?php } ?>
-                            </tbody>
-                        </table>
-
-                        <div class="mt-5 ml-auto col-lg-5 px-0 bg-light rounded">
-                            <div class="d-flex justify-content-between align-items-center w-100 p-3">
-                                <h4 class="mb-0 text-dark">Tổng Tiền: </h4>
-                                <h4 class="mb-0 text-dark"><span id="total"><?php echo number_format($sum,0,",","."); ?></span><sup>đ</sup></h4>
+            <div class="my-5 d-block">
+                <form action="POST">
+                    <div class="row">
+                        <div class="col-lg-6 mx-auto">
+                        <form method="get">
+                            <div class="form-group">
+                                <label for="customerName">Họ và tên</label>
+                                <input type="text" class="form-control" placeholder="Điền họ và tên khách hàng" required value="<?php echo $result['TEN_KH']; ?>">
                             </div>
-                            <div class="px-3 mb-5">
-                                <a href="<?php echo $href; ?>" class="btn btn-info btn-block btn-lg py-3" <?php echo $checkLogin; ?>>Xác Nhận Giỏ Hàng</a>
+                            <div class="form-group">
+                                <label for="customerEmail">Email</label>
+                                <input type="text" class="form-control" placeholder="Điền Email khách hàng" required value="<?php echo $result['EMAIL']; ?>">
                             </div>
+                            <div class="form-group">
+                                <label for="customerContact">Số Điện Thoại</label>
+                                <input type="text" class="form-control" placeholder="Điền số điện thoại khách hàng" required value="<?php echo $result['DIENTHOAI']; ?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="customerAddress">Địa Chỉ</label>
+                                <input type="text" class="form-control" placeholder="Điền địa chỉ khách hàng" required value="<?php echo $result['DIACHI']; ?>">
+                            </div>
+
+                            <a href="payment.php" type="submit" class="mt-4 btn btn-block btn-info btn-lg font-weight-bold" name="move">Tiếp Tục</a>
+                            </form>
                         </div>
-                    <?php 
-                        } else {
-
-                    ?>
-                    <div class="text-center py-5 font-weight-bolder">
-                            <p>Giỏ Hàng Của Bạn Đang Trống</p>
-                            <a href="product.php" class="btn btn-info mt-2">Trở Lại Trang Mua Hàng</a>
                     </div>
-                    <?php } ?>
-                    </div>
-                </div>
+                </form>
             </div>
     </div>
     

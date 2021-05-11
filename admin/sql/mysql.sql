@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: localhost:8889
--- Thời gian đã tạo: Th5 09, 2021 lúc 07:17 AM
+-- Thời gian đã tạo: Th5 11, 2021 lúc 05:32 AM
 -- Phiên bản máy phục vụ: 5.7.30
 -- Phiên bản PHP: 7.4.9
 
@@ -48,7 +48,7 @@ INSERT INTO `admin` (`ID`, `Name`, `Email`, `Passwd`, `Image`, `Contact`, `Addre
 --
 
 CREATE TABLE `CT_HOADON` (
-  `MA_HD` varchar(10) NOT NULL,
+  `MA_HD` int(10) NOT NULL,
   `MA_SP` varchar(10) NOT NULL,
   `SOLUONG` int(11) NOT NULL,
   `TONGTIEN` int(11) NOT NULL
@@ -59,13 +59,13 @@ CREATE TABLE `CT_HOADON` (
 --
 
 INSERT INTO `CT_HOADON` (`MA_HD`, `MA_SP`, `SOLUONG`, `TONGTIEN`) VALUES
-('HD01', 'balo01', 3, 870000),
-('HD01', 'SP007', 3, 6600000),
-('HD02', 'balo01', 2, 600000),
-('HD03', 'tee02', 2, 380000),
-('HD04', 'tee01', 3, 570000),
-('HD05', 'balo01', 1, 300000),
-('HD05', 'balo02', 1, 290000);
+(1111, 'balo01', 3, 870000),
+(1111, 'SP007', 3, 6600000),
+(1112, 'balo01', 2, 600000),
+(1113, 'tee02', 2, 380000),
+(1114, 'tee01', 3, 570000),
+(1115, 'balo01', 1, 300000),
+(1115, 'balo02', 1, 290000);
 
 -- --------------------------------------------------------
 
@@ -97,7 +97,7 @@ INSERT INTO `HANGSX` (`MA_HANGSX`, `TEN_HANGSX`) VALUES
 --
 
 CREATE TABLE `HOADON` (
-  `MA_HD` varchar(10) NOT NULL,
+  `MA_HD` int(10) NOT NULL,
   `MA_KH` int(11) NOT NULL,
   `TONGTIEN` int(11) NOT NULL,
   `TRANGTHAI` text
@@ -108,11 +108,11 @@ CREATE TABLE `HOADON` (
 --
 
 INSERT INTO `HOADON` (`MA_HD`, `MA_KH`, `TONGTIEN`, `TRANGTHAI`) VALUES
-('HD01', 2, 6690000, 'Đã Thanh Toán'),
-('HD02', 4, 650000, 'Đã Thanh Toán'),
-('HD03', 5, 1100000, 'Chưa Thanh Toán'),
-('HD04', 1, 500000, 'Chưa Thanh Toán'),
-('HD05', 3, 900000, 'Đã Thanh Toán');
+(1111, 2, 6690000, 'Đã Thanh Toán'),
+(1112, 4, 650000, 'Đã Thanh Toán'),
+(1113, 5, 1100000, 'Chưa Thanh Toán'),
+(1114, 1, 500000, 'Chưa Thanh Toán'),
+(1115, 3, 900000, 'Đã Thanh Toán');
 
 -- --------------------------------------------------------
 
@@ -142,7 +142,7 @@ INSERT INTO `KH` (`MA_KH`, `TEN_KH`, `EMAIL`, `MATKHAU`, `DIACHI`, `DIENTHOAI`, 
 (4, 'PHẠM LÊ VĂN D', 'PDV@GMAIL.COM', '123456', 'QUẬN BÌNH THẠNH, TP. HCM', '0909XXX004', 'kh004.jpeg', 'LOCKED'),
 (5, 'NGUYỄN LÊ TƯỜNG E', 'NTE@GMAIL.COM', '123456', 'VIỆT TRÌ, PHÚ THỌ', '0909XXX005', 'kh005.jpeg', ''),
 (10, 'admin', 'admin@admin.com', 'admin', 'admin', 'admin', NULL, 'LOCKED'),
-(13, 'tun', 'tun@tun.com', 'tun', 'tun123', 'tun123', 'kh001.jpeg', NULL),
+(13, 'Hắc Tún', 'tun@tun.com', 'tun', '80 79Str D7 HCMC', '0123456789', 'kh001.jpeg', NULL),
 (14, 'tuan', 'tuan@tuan.com', 'tuan', 'tuan', 'tuan', NULL, NULL);
 
 -- --------------------------------------------------------
@@ -257,6 +257,12 @@ ALTER TABLE `SP`
 --
 -- AUTO_INCREMENT cho các bảng đã đổ
 --
+
+--
+-- AUTO_INCREMENT cho bảng `HOADON`
+--
+ALTER TABLE `HOADON`
+  MODIFY `MA_HD` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1116;
 
 --
 -- AUTO_INCREMENT cho bảng `KH`

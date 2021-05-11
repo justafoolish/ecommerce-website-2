@@ -57,4 +57,34 @@
 
     }
 
+    if(isset($_POST['removeID'])) {
+        $getID = $_POST['removeID'];
+        $cart = $_SESSION['cart'];
+
+        unset($cart[$getID]);
+
+        if(count($cart) == 0) {
+            unset($_SESSION['cart']);
+        } else {
+            $_SESSION['cart'] = $cart;
+        }
+
+    }
+    if(isset($_POST['updateID']) && isset($_POST['quantity'])) {
+        $updateID = $_POST['updateID'];
+        $quantity = $_POST['quantity'];
+
+        $cart = $_SESSION['cart'];
+        $cart[$updateID]["quantity"] = $quantity;
+
+        $_SESSION['cart'] = $cart;
+
+        $new_qty = 0;
+        foreach($cart as $value) {
+            $new_qty += $value["quantity"];  
+        }
+
+        echo $new_qty;
+    }
+
 ?>

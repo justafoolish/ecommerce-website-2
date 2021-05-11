@@ -21,12 +21,16 @@
 
             echo "<script>alert('Đăng Ký Thành Công')</script>";
 
-            echo "<script>window.open('index.html','_self')</script>";
+            echo "<script>window.history.back();</script>";
 
         } 
         else {
 
             echo "<script>alert('Đăng Ký Thất Bại')</script>";
+
+
+            echo "<script>window.history.back();</script>";
+
 
         }
 

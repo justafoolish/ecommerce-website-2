@@ -166,7 +166,7 @@ if (isset($_GET['productID'])) {
                </div>    
                <div class="row mt-5">
                    <div class="col-md-12">
-                       <button id="myBtn" class="btn btn-warning text-light mt-auto" onclick="addCart('<?php echo $getP['MA_SP'] ?>')">                            
+                       <button id="myBtn" class="btn btn-warning text-light mt-auto" onclick="addCart('<?php echo $pID; ?>')">                            
                            <i class="fa fa-cart-plus" aria-hidden="true"></i> 
                            Thêm Vào Giỏ                   
                        </button>
