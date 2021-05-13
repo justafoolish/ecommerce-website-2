@@ -29,9 +29,10 @@
 
         } 
         else {
-            echo "<script>window.history.back();</script>";
 
             echo "<script>alert('Địa Chỉ Email Hoặc Mật Khẩu Không Đúng')</script>";
+
+            echo "<script>window.history.back();</script>";
 
         }
 

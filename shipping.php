@@ -3,6 +3,11 @@
 session_start();
 
 include("admin/includes/database.php");
+
+if(!isset($_SESSION['cart']) || !isset($_SESSION['user_id'])) {
+    echo "<script>window.open('cart.php','_self')</script>";
+}
+else 
 $MyConn = new MyConnect();
 
 $userID = $_SESSION['user_id'];
@@ -86,9 +91,9 @@ $result = mysqli_fetch_array($execute);
             
           </ul>
 
-          <form class="form-inline">
-            <input class="form-control-sm mr-sm-2 border-0" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn my-sm-0 "><a href="" class="text-light"><i class="fas fa-search"></i></a></i></button>
+          <form class="form-inline" method="get" action="search.php">
+            <input class="form-control-sm mr-sm-2 border-0" type="search" name="keyword"  placeholder="Tìm kiếm sản phẩm" aria-label="Search">
+            <button class="btn my-sm-0 "><a class="text-light"><i class="fas fa-search"></i></i></a></button>
             <a href="cart.php" class="btn my-sm-0 border-0 bg-transparent text-light">
                 <i class="fas fa-shopping-cart position-relative">
                 <?php

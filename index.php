@@ -3,6 +3,8 @@
 session_start();
 
 include("admin/includes/database.php");
+$MyConn = new MyConnect();
+
 
 ?>
 <!DOCTYPE html>
@@ -39,6 +41,9 @@ include("admin/includes/database.php");
         border-radius: 50%;
         font-size: 12px;
     }
+    .p:hover {
+    box-shadow: 0 0 11px rgba(33,33,33,.2); 
+}
   </style>
 </head>
 <body>
@@ -66,9 +71,9 @@ include("admin/includes/database.php");
             
           </ul>
 
-          <form class="form-inline">
-            <input class="form-control-sm mr-sm-2 border-0" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn my-sm-0 "><a href="" class="text-light"><i class="fas fa-search"></i></a></i></button>
+          <form class="form-inline" method="get" action="search.php">
+            <input class="form-control-sm mr-sm-2 border-0" type="search" name="keyword"  placeholder="Tìm kiếm sản phẩm" aria-label="Search">
+            <button class="btn my-sm-0 "><a class="text-light"><i class="fas fa-search"></i></i></a></button>
             <a href="cart.php" class="btn my-sm-0 border-0 bg-transparent text-light">
                 <i class="fas fa-shopping-cart position-relative">
                 <?php
@@ -130,6 +135,51 @@ include("admin/includes/database.php");
         <div class="row mt-4 mb-4">
             <div class="col-md-12 ">
                 <h2 class="font-weight-bolder" style="color: #2f3640;">Sản Phẩm Mới</h2>
+                <div class="row mt-0 mx-4 card-deck">
+                <?php 
+
+                    
+
+
+
+                    
+                    $i = 0;
+                    $queryP = "SELECT * FROM SP LIMIT 4";
+
+                    $resultP = $MyConn->query($queryP);
+
+
+
+                    while($getP = mysqli_fetch_array($resultP)) {
+                        
+                        if($i%3 == 0 && $i != 0) {
+                            echo "</div><div class='row mt-3 ml-4 card-deck'>";
+                        }                        
+                ?>
+                    <div class="col-md-3 p-1 mt-3">
+                            <div class="card card-link h-100 p-0 p">
+                                <div class="card-header p-0 border-bottom-0 h-100">
+                                <a href="detail.php?productID=<?php echo $getP['MA_SP'] ?>" class="text-decoration-none text-dark">
+                                    <img src="<?php echo "admin/product_images/".$getP['HINHANH_SP'] ?>" class="card-img-top h-100 img-reponsive">
+                                </a>
+                                </div> <!-- close card header -->
+                                <div class="card-body p-0">
+                                <a href="detail.php?productID=<?php echo $getP['MA_SP'] ?>" class="text-decoration-none text-dark">
+                                    <div class="card-title text-center mt-4">
+                                        <h6 class="font-weight-bold"><?php echo $getP['TEN_SP'] ?></h6>
+                                        <div class="font-weight-bold text-danger"><?php echo number_format($getP['GIA'],0,",","."); ?><sup>đ</sup></div>
+                                    </div>
+                                </a>
+                                </div> 
+                                <div class="card-footer border-top-0 bg-transparent mt-3">
+                                    <button id="myBtn" onclick="addCart('<?php echo $getP['MA_SP'] ?>')" class="btn btn-warning w-100 mt-auto text-white"><i class="fas fa-cart-plus"></i> Thêm Vào Giỏ</button>
+
+                                </div>
+                                <!-- close card body -->
+                            </div> <!-- close card -->
+                    </div> <!-- close col -->
+                    <?php } ?>
+                </div> <!-- close row -->
             </div>
         </div>
         <div id="newProduct" class="row mb-3 ml-4 mr-4">
@@ -141,6 +191,51 @@ include("admin/includes/database.php");
             <div class="row mt-5 mb-4">
                 <div class="col-md-12">
                     <h2 class="font-weight-bolder d-block" style="color: #2f3640;">Sản Phẩm Bán Chạy</h2>
+                    <div class="row mt-0 mx-4 card-deck">
+                <?php 
+
+                    
+
+
+
+                    
+                    $i = 0;
+                    $queryP = "SELECT SP.MA_SP, SP.TEN_SP, SP.HINHANH_SP, SP.GIA, SUM(CT_HOADON.SOLUONG) FROM SP, CT_HOADON WHERE SP.MA_SP = CT_HOADON.MA_SP GROUP BY MA_SP LIMIT 4";
+
+                    $resultP = $MyConn->query($queryP);
+
+
+
+                    while($getP = mysqli_fetch_array($resultP)) {
+                        
+                        if($i%3 == 0 && $i != 0) {
+                            echo "</div><div class='row mt-3 ml-4 card-deck'>";
+                        }                        
+                ?>
+                    <div class="col-md-3 p-1 mt-3">
+                            <div class="card card-link h-100 p-0 p">
+                                <div class="card-header p-0 border-bottom-0 h-100">
+                                <a href="detail.php?productID=<?php echo $getP['MA_SP'] ?>" class="text-decoration-none text-dark">
+                                    <img src="<?php echo "admin/product_images/".$getP['HINHANH_SP'] ?>" class="card-img-top h-100 img-reponsive">
+                                </a>
+                                </div> <!-- close card header -->
+                                <div class="card-body p-0">
+                                <a href="detail.php?productID=<?php echo $getP['MA_SP'] ?>" class="text-decoration-none text-dark">
+                                    <div class="card-title text-center mt-4">
+                                        <h6 class="font-weight-bold"><?php echo $getP['TEN_SP'] ?></h6>
+                                        <div class="font-weight-bold text-danger"><?php echo number_format($getP['GIA'],0,",","."); ?><sup>đ</sup></div>
+                                    </div>
+                                </a>
+                                </div> 
+                                <div class="card-footer border-top-0 bg-transparent mt-3">
+                                    <button id="myBtn" onclick="addCart('<?php echo $getP['MA_SP'] ?>')" class="btn btn-warning w-100 mt-auto text-white"><i class="fas fa-cart-plus"></i> Thêm Vào Giỏ</button>
+
+                                </div>
+                                <!-- close card body -->
+                            </div> <!-- close card -->
+                    </div> <!-- close col -->
+                    <?php } ?>
+                </div> <!-- close row -->
                 </div>
             </div>
         
@@ -153,6 +248,51 @@ include("admin/includes/database.php");
             <div class="row mt-5 mb-4">
                 <div class="col-md-12 ">
                     <h2 class="font-weight-bolder" style="color: #2f3640;">Có Thể Bạn Sẽ Thích</h2>
+                    <div class="row mt-0 mx-4 card-deck">
+                <?php 
+
+                    
+
+
+
+                    
+                    $i = 0;
+                    $queryP = "SELECT * FROM SP ORDER BY RAND() LIMIT 4";
+
+                    $resultP = $MyConn->query($queryP);
+
+
+
+                    while($getP = mysqli_fetch_array($resultP)) {
+                        
+                        if($i%3 == 0 && $i != 0) {
+                            echo "</div><div class='row mt-3 ml-4 card-deck'>";
+                        }                        
+                ?>
+                    <div class="col-md-3 p-1 mt-3">
+                            <div class="card card-link h-100 p-0 p">
+                                <div class="card-header p-0 border-bottom-0 h-100">
+                                <a href="detail.php?productID=<?php echo $getP['MA_SP'] ?>" class="text-decoration-none text-dark">
+                                    <img src="<?php echo "admin/product_images/".$getP['HINHANH_SP'] ?>" class="card-img-top h-100 img-reponsive">
+                                </a>
+                                </div> <!-- close card header -->
+                                <div class="card-body p-0">
+                                <a href="detail.php?productID=<?php echo $getP['MA_SP'] ?>" class="text-decoration-none text-dark">
+                                    <div class="card-title text-center mt-4">
+                                        <h6 class="font-weight-bold"><?php echo $getP['TEN_SP'] ?></h6>
+                                        <div class="font-weight-bold text-danger"><?php echo number_format($getP['GIA'],0,",","."); ?><sup>đ</sup></div>
+                                    </div>
+                                </a>
+                                </div> 
+                                <div class="card-footer border-top-0 bg-transparent mt-3">
+                                    <button id="myBtn" onclick="addCart('<?php echo $getP['MA_SP'] ?>')" class="btn btn-warning w-100 mt-auto text-white"><i class="fas fa-cart-plus"></i> Thêm Vào Giỏ</button>
+
+                                </div>
+                                <!-- close card body -->
+                            </div> <!-- close card -->
+                    </div> <!-- close col -->
+                    <?php } ?>
+                </div> <!-- close row -->
                 </div>
             </div>
         <div id="recommend" class="row mb-3 ml-4 mr-4">
