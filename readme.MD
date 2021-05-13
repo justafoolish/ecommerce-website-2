@@ -1,4 +1,4 @@
-###### Ecommerce website using PHP, HTML/CSS/JS (Bootstrap V4)
+# Ecommerce website using PHP, HTML/CSS/JS (Bootstrap V4)
 
 1. Create Data Base CuaHang into MySql import file mysql.sql follow path /admin/sql/mysql.sql
 
