@@ -4,6 +4,6 @@
 
 2. Edit host, port, user and passwd file database.php in admin/includes/database.php
 
-realtime site: [a link](hactun-ecomm.herokuapp.com)
+realtime site: [Ecommerce WebSite](hactun-ecomm.herokuapp.com)
 
 database using MySQL GearHost
