@@ -33,7 +33,6 @@ if (isset($_GET['productID'])) {
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="js/cart_process.js"></script>
 
   <style>
       .nl {
@@ -208,9 +207,9 @@ if (isset($_GET['productID'])) {
     
    <footer class="bg-dark">
         <div class="container-fuild text-light">
-            <div class="row card-deck pt-3 ml-5">
+            <div class="row card-deck pt-3">
                 <div class="col-md-5 pr-0">
-                    <div class="card border-0 bg-dark ml-5">
+                    <div class="card border-0 bg-dark ml-4">
                         <div class="card-header bg-dark border-0"><h4>HỆ THỐNG CỬA HÀNG</h4></div>
                         <div class="card-body border-0">
                             <p>Chi nhánh 1:     273, An Dương Vương, Quận 5, Tp.HCM</p>
@@ -220,7 +219,7 @@ if (isset($_GET['productID'])) {
                     </div>
                 </div>
                 <div class="col-md pl-0">
-                    <div class="card border-0 bg-dark">
+                    <div class="card border-0 bg-dark ml-4">
                         <div class="card-header bg-dark border-0"><h4>CHÍNH SÁCH & DỊCH VỤ</h4></div>
                         <div class="card-body border-0">
                             <a href="#" class="text-light text-decoration-none pb-3"><i class="fas fa-shipping-fast mr-2"></i>Vận chuyển</a><br>
@@ -230,7 +229,7 @@ if (isset($_GET['productID'])) {
                     </div>
                 </div> 
                 <div class="col-md">
-                    <div class="card border-0 bg-dark mx-0">
+                    <div class="card border-0 bg-dark mx-0 ml-4">
                         <div class="card-header bg-dark border-0"><h4>LIÊN HỆ</h4></div>
                         <div class="card-body border-0">
                             <p><i class="fas fa-phone-alt mr-2"></i> 0123456789 <br>
@@ -259,7 +258,7 @@ if (isset($_GET['productID'])) {
 
 
     <?php include("login_registry_modal.php"); ?>
-
+    <script type="text/javascript" src="js/addCart.js"></script>
   
 
 </body>
